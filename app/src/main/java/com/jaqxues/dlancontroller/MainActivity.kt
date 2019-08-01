@@ -48,9 +48,13 @@ class MainActivity : Activity() {
         toggleButton.isEnabled = false
         GlobalScope.launch(Dispatchers.Main) {
             apiHandler = ApiHandler.getInstance(spinner.selectedItem as String)
-            isChecked = apiHandler.getWLanState()
-            toggleButton.isChecked = isChecked
-            toggleButton.isEnabled = true
+            try {
+                isChecked = apiHandler.getWLanState()
+                toggleButton.isChecked = isChecked
+                toggleButton.isEnabled = true
+            } catch (ex: Exception) {
+                Toast.makeText(this@MainActivity, "Device cannot be reached", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
