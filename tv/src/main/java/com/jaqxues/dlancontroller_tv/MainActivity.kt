@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val apiHandler = ApiHandler.getInstance("192.168.178.21")
+
         toggleButton.setOnClickListener {
             if (currentJob?.isActive == true) {
                 Toast.makeText(this@MainActivity, "Job already active", Toast.LENGTH_LONG).show()
@@ -26,7 +28,7 @@ class MainActivity : AppCompatActivity() {
                 toggleButton.isEnabled = false
                 currentJob = GlobalScope.launch (Dispatchers.Main) {
                     try {
-                        ApiHandler.changeWLanState(!isChecked)
+                        apiHandler.changeWLanState(!isChecked)
                         Toast.makeText(this@MainActivity, "Success", Toast.LENGTH_SHORT).show()
                         isChecked = !isChecked
                     } catch (ex: Exception) {
@@ -39,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         GlobalScope.launch(Dispatchers.Main) {
-            isChecked = ApiHandler.getWLanState()
+            isChecked = apiHandler.getWLanState()
             toggleButton.isChecked = isChecked
             toggleButton.isEnabled = true
         }
